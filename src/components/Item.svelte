@@ -6,17 +6,30 @@
   function triggerUpdate() {
     dispatch("udpate", { id, text, completed });
   }
+
+  function handleDoubleClick() {
+    const yes = confirm("Are you sure to delete this task?");
+    if (yes) {
+      dispatch("delete", id);
+    }
+  }
 </script>
 
-<div class="item" class:completed>
+<div class="item" class:completed on:dblclick={handleDoubleClick}>
   <input
     class="text-input"
     type="text"
     bind:value={text}
     readonly={completed}
     on:keyup={({ key, target }) => key === "Enter" && target.blur()}
+    on:blur={() => triggerUpdate()}
   />
-  <input class="completed-checkbox" type="checkbox" bind:checked={completed} />
+  <input
+    class="completed-checkbox"
+    type="checkbox"
+    bind:checked={completed}
+    on:change={() => triggerUpdate()}
+  />
 </div>
 
 <style>
